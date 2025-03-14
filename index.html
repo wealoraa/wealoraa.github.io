@@ -18,6 +18,13 @@
             scroll-behavior: smooth;
             background-color: #121212;
             color: #ffffff;
+            /* background: radial-gradient(#28313B, #485461); */
+        }
+        .banner {
+            background: radial-gradient(#2C3E50, #121212);
+            height: 95vh;
+            justify-items: center;
+            align-items: center;
         }
         .stock-card {
             cursor: pointer;
@@ -25,7 +32,7 @@
             min-width: 200px;
             text-align: center;
             padding: 15px;
-            background: #1e1e1e;
+            /* background: #1e1e1e; */
             border-radius: 10px;
             margin: 10px;
             color: #ffffff;
@@ -42,7 +49,7 @@
         }
         .stock-card:hover {
             transform: scale(1.05);
-            background: #333333;
+            /* background: #333333; */
         }
         .stock-container {
             display: flex;
@@ -57,9 +64,6 @@
             background: #888;
             border-radius: 4px;
         }
-        header {
-            background: #007bff;
-        }
         footer {
             background: #1e1e1e;
         }
@@ -69,6 +73,26 @@
         }
         .btn-primary:hover {
             background-color: #0056b3;
+        }
+        /* #stock-reports {
+            background: linear-gradient(#121212, #2C3E50);
+        } */
+        #feedback, #stock-request, #referral, .stock-card {
+            background: radial-gradient(#000000, #2C3E50);
+        }
+
+        .glowing-box:hover {
+            box-shadow: 0 0 15px #2C3E50, 0 0 15px #2C3E50,
+            0 0 15px #2C3E50;
+        }
+
+        #report-frame {
+            border: none;
+            background-color: #ffffff;
+            margin-top: 5px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #2C3E50, 0 0 60px #2C3E50,
+            0 0 90px #2C3E50;
         }
     </style>
 </head>
@@ -92,40 +116,56 @@
     </nav>
     
     <!-- Banner -->
-    <header class="text-white text-center py-5 mt-5">
-        <h1>Understand Stocks Without the Jargon!</h1>
-        <p>Wealoraa simplifies stock analysis for you. No complex terms, just actionable insights.</p>
+    <header class="banner text-white text-center py-5 mt-5 align-items-center align-content-center">
+        <div class="container align-items-center">
+            <h1>Your Guide to Smarter & Simplified Investing!</h1>
+            <p>Wealoraa simplifies stock analysis for you. No complex terms, just actionable insights.</p>
+        </div>
     </header>
     
     <!-- Stock Reports Section -->
-    <section id="stock-reports" class="container py-5">
-        <h2 class="text-center mb-4">Stock Reports</h2>
-        
-        <div class="stock-container">
-            <!-- Stock cards will be added here dynamically -->
-        </div>
+    <section id="stock-reports">
+        <div class="container py-5">
+            <h2 class="text-center mb-4">Stock Reports</h2>
 
-        <iframe id="report-frame" class="w-100 mt-3" style="display: none; height: auto; background-color: #ffffff;"></iframe>
+            <div class="stock-container">
+                <!-- Stock cards will be added here dynamically -->
+                <div class="stock-card glowing-box" onclick="loadReport('./reports/BHEL_report.html')">
+                    <img src="stock1_logo.png" alt="Stock 1">
+                    <span>Stock 1</span>
+                </div>
+            </div>
+    
+            <iframe id="report-frame" class="w-100 mt-3" style="display: none; height: 5000px; background-color: #ffffff;"></iframe>
+        </div>        
     </section>
     
     <!-- Feedback Section -->
-    <section id="feedback" class="container py-5" style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
-        <h2 class="text-center">Feedback</h2>
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfUz9u_UkREXigE41gmqKyHiy4ZHE86BDamk_6AXCFDEgq3hA/viewform?embedded=true" width="640" height="1850" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <section id="feedback">
+        <div class="container py-5" style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
+            <h2 class="text-center">Let us know how we are doing!</h2>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfUz9u_UkREXigE41gmqKyHiy4ZHE86BDamk_6AXCFDEgq3hA/viewform?embedded=true" width="640" height="1850" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
     </section>
     
     <!-- Stock Request Section -->
-    <section id="stock-request" class="container py-5"  style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
-        <h2 class="text-center">Raise a Stock Request</h2>
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" width="640" height="650" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    <section id="stock-request">
+        <div class="container py-5"  style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
+            <h2 class="text-center">Raise a Stock Request!</h2>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" width="640" height="650" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
     </section>
 
     <!-- Referral Section -->
-    <section id="referral" class="container py-5">
-        <h2 class="text-center">Referral Program</h2>
-        <input type="email" id="email" class="form-control" placeholder="Enter your email">
-        <button class="btn btn-primary mt-2" onclick="generateReferral()">Generate Referral Link</button>
-        <p id="referral-link" class="mt-3"></p>
+    <section id="referral">
+        <div class="container py-5" style="align-items: center; justify-items: center;">
+            <h2 class="text-center">Referral Program</h2>
+            <form action="javascript:generateReferral()" style="width: 500px; align-items: center; justify-items: center;">
+                <input type="email" id="email" class="form-control" style="max-width: 500px;" placeholder="Enter your email">
+                <button type="submit" class="btn btn-primary mt-2">Generate Referral Link</button>
+            </form>
+            <p id="referral-link" class="mt-3"></p>
+        </div>
     </section>
     
     <!-- Disclaimer -->
@@ -161,7 +201,7 @@
                 const requestCard = document.createElement('div');
                 requestCard.classList.add('stock-card');
                 requestCard.onclick = () => scrollToRequest();
-                requestCard.innerHTML = `<span>Didn't find the stock you're looking for? Raise a Request</span>`;
+                requestCard.innerHTML = `<span style="white-space: normal;">Didn't find the stock you're looking for?</span> <br> <span style="white-space: normal;">Raise a Request Now!</span>`;
                 requestCard.style = 'max-width: 200px; text-align: center;';
                 stockContainer.appendChild(requestCard);
 
@@ -192,10 +232,23 @@
             let email = document.getElementById('email').value;
             if (email) {
                 let referralLink = `https://wealoraa.com?ref=${btoa(email)}`;
-                document.getElementById('referral-link').innerHTML = `Your referral link: <a href="${referralLink}" target="_blank">${referralLink}</a>`;
+                document.getElementById('referral-link').innerHTML = `Your referral link: <span onclick="copyContent()" id="ref_link" style="font-weight: bold;">${referralLink}</span>`;
                 gtag('event', 'generate_referral', {'email': email});
             }
         }
+
+        const copyContent = async () => {
+            try {
+                let text = document.getElementById('ref_link').innerHTML;
+                await navigator.clipboard.writeText(text);
+                console.log('Content copied to clipboard');
+                alert("Referral link copied to clipboard!");
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        };
+
+
         function scrollToRequest() {
             document.getElementById('stock-request').scrollIntoView({ behavior: 'smooth' });
         }
