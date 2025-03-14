@@ -44,7 +44,58 @@
             height: 95vh;
             justify-items: center;
             align-items: center;
+
+            text-align: center;
+            padding: 50px;
+            color: white;
+            /* background: linear-gradient(-45deg, #ff416c, #ff4b2b, #1e3c72, #2a5298); */
+            background-size: 300% 300%;
+            /* animation: gradientMove 10s ease infinite; */
+
+            animation: fadeIn 2s ease-in-out;
+            position: relative;
         }
+        .banner h1, .banner h6 {
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        } */
+
+        .typing {
+            display: inline-block;
+            border-right: 3px solid white;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .banner h1, .banner p {
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+
         .stock-card {
             cursor: pointer;
             transition: transform 0.2s;
@@ -155,15 +206,46 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Button Styling */
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
+    <!-- 
+    TODO:
+    [Done] 2. Replace Bolt with inWelth in the stock reports
+    [Done] 4. Create hyperlink for the stock reports
+    [Done] 9. Add a share button for each stock
+    [Done] 6. Bring stock report request section up above feedback
+    7. Change feedback form order of last 3 cards
+    11. Combine dark and white themes
+    [Done] 12. Add a back to top button
+    [Done] 14. Reduce timeouts while loading the iframes
+    5. reduce load time of the website
+    1. Fix referral link - email data is PII and will be redacted in Google Analytics
+    [Done] 10. Add some animation in the banner or some background moving image
+    13. Check enabling of adsense
+    3. Cleanup extra emojis in the summarization prompt
+    remove personalities page line and chart line from the prompt
+    update report html gen code to auto replace the new logo image
+    -->
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbg-dark fixed-top py-3">
         <div class="container">
-            <div class="navbar-brand" style="display: flex; align-items: end;">
-                <img src="/images/logo.png" width="50px" alt="">
-                <a class="russo-one-regular" id="nav-click" href="#">EALORAA</a>
+            <div class="navbar-brand" style="display: flex; align-items: baseline;">
+                <img src="./images/inwelth_logo_white.png" width="120px" alt="">
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -181,9 +263,12 @@
     
     <!-- Banner -->
     <header class="banner text-white text-center py-5 mt-5 align-items-center align-content-center">
+        <canvas class="particles"></canvas>
         <div class="container align-items-center">
-            <h1>Your Guide to Smarter & Simplified Investing!</h1>
-            <p>Wealoraa simplifies stock analysis for you. No more jargons, just actionable insights.</p>
+            <!-- <img src="./images/banner.jpg" width="100%" alt="" style="z-index: -10;"> -->
+            <h1 class="typing" id="typing-text"></h1> 
+            <!-- Your Guide for a Smarter & Simplified Investing! -->
+            <h6 style="font-size: large;">inWelth simplifies stock analysis using AI. No more jargons, only actionable insights, just for you.</h6>
         </div>
     </header>
     
@@ -194,16 +279,29 @@
 
             <div class="stock-container">
                 <!-- Stock cards will be added here dynamically -->
-                <div class="stock-card glowing-box" onclick="loadReport('./reports/BHEL_report.html')">
+                <div class="stock-card glowing-box" onclick="loadReport('./reports/BHEL_report.html', 'webpage')">
                     <img src="./images/BHEL_logo.png" alt="Stock 1">
                     <span>Stock 1</span>
                 </div>
             </div>
     
             <iframe id="report-frame" class="w-100 mt-3" style="display: none; height: auto; background-color: #ffffff;"></iframe>
-        </div>        
+            <div class="w-100 mt-3" style="display: flex; justify-content: center;">
+                <button id="copyURL" class="btn btn-primary" style="display: none; justify-items: middle;">Copy report link for sharing?</button>
+            </div>
+        </div>
     </section>
     
+    <!-- Stock Request Section -->
+    <section id="stock-request">
+        <div class="container py-5"  style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
+            <h2 class="text-center">Request for a Stock Report!</h2>
+            <div class="iframe-container-request">
+                <iframe id="request-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" height="auto" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+        </div>
+    </section>
+
     <!-- Feedback Section -->
     <section id="feedback">
         <div class="container py-5" style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
@@ -213,38 +311,25 @@
             </div>
         </div>
     </section>
-    
-    <!-- Stock Request Section -->
-    <section id="stock-request">
-        <div class="container py-5"  style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
-            <h2 class="text-center">Raise a Stock Request!</h2>
-            <div class="iframe-container-request">
-                <iframe id="request-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" height="auto" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-            </div>
-        </div>
-    </section>
 
     <!-- Referral Section -->
-    <section id="referral">
+    <!-- <section id="referral">
         <div class="container py-5" style="align-items: center; justify-items: center;">
             <h2 class="text-center">Referral Program</h2>
-            <!-- TODO: Write a bit about the referral program -->
              <h4 class="pt-5">Why should you refer and share us ?</h4>
              <ul>
                 <li>Priority Stock Report Requests → Top referrer's stock requests will be served faster.</li>
                 <li>Early Access to New Reports & Features → Before they might even go public.</li>
              </ul>
-            <!-- Priority Stock Report Requests → Let referrers request custom reports.
-            Early Access to New Reports & Features → Before they go public.
-            Ad-Free Experience Later → Top referrers will get a clean interface.
-            Leaderboard & Community Recognition → Top referrers will be recognized on the website. -->
             <form action="javascript:generateReferral()" style="width: 300px; align-items: center; justify-items: center;" class="pt-5">
                 <input type="email" id="email" class="form-control" style="max-width: 300px;" placeholder="Enter your email" required>
                 <button type="submit" class="btn btn-primary mt-3">Generate Referral Link</button>
                 <p id="referral-link" class="mt-3" style="white-space: normal;word-wrap: break-word;word-break: break-all;"></p>
             </form>
         </div>
-    </section>
+    </section> -->
+
+    <button id="backToTop" class="btn btn-primary">↑ Top</button>
     
     <!-- Disclaimer -->
     <footer class="text-center p-3">
@@ -267,7 +352,7 @@
                     const stockCard = document.createElement('div');
                     stockCard.classList.add('stock-card');
                     stockCard.classList.add('glowing-box');
-                    stockCard.onclick = () => loadReport("/reports/" + stock.name + "_report.html");
+                    stockCard.onclick = () => loadReport("/reports/" + stock.name + "_report.html", "webpage");
 
                     stockCard.innerHTML = `
                         <img src="/images/${stock.name + "_logo.png"}" alt="${stock.name}">
@@ -290,7 +375,7 @@
             }
         });
 
-        function loadReport(file) {
+        function loadReport(file, source) {
             let iframe = document.getElementById('report-frame');
             iframe.src = file;
             iframe.style.display = 'block';
@@ -298,10 +383,19 @@
             iframe.onload = function () {
                 setTimeout(() => {
                     iframe.style.height = iframe.contentWindow.document.documentElement.scrollHeight + 'px';
-                }, 200); // Adding a slight delay to ensure the content is fully loaded
+                }, 50); // Adding a slight delay to ensure the content is fully loaded
             };
-        }
 
+            window.history.pushState({}, "", "?stock=" + file.split("/")[2].split("_")[0]);
+
+            document.getElementById('copyURL').style.display = 'block';
+
+            if (source == "stock_link") {
+                gtag('event', 'stock_report_link', {'stock': file.split("/")[2].split("_")[0]});
+            } else {
+                gtag('event', 'stock_report_click', {'stock': file.split("/")[2].split("_")[0]});
+            }
+        }
 
         function scrollToRequest() {
             document.getElementById('stock-request').scrollIntoView({ behavior: 'smooth' });
@@ -324,7 +418,7 @@
             try {
                 let text = document.getElementById('ref_link').innerHTML;
                 await navigator.clipboard.writeText(text);
-                console.log('Content copied to clipboard');
+                gtag('event', 'copy_ref_url', {'url': text});
                 alert("Referral link copied to clipboard!");
             } catch (err) {
                 console.error('Failed to copy: ', err);
@@ -376,6 +470,107 @@
         }
         window.addEventListener("load", adjustIframeHeightFeedback);
         window.addEventListener("resize", adjustIframeHeightFeedback);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Example: Change heading text based on 'title' query param
+            const stockParam = params.get("stock");
+            if (stockParam) {
+                loadReport('./reports/' + stockParam + '_report.html', 'stock_link');
+            }
+        });
+
+        document.getElementById("copyURL").addEventListener("click", function() {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert("Stock URL copied to clipboard!"))
+                .catch(err => console.error("Error copying URL: ", err));
+
+            gtag('event', 'copy_stock_url', {'url': window.location.href});
+        });
+
+        const backToTopButton = document.getElementById("backToTop");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        });
+
+        backToTopButton.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+
+
+        const canvas = document.querySelector(".particles");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 4,
+                speedX: Math.random() * 2 - 1,
+                speedY: Math.random() * 2 - 1
+            });
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+
+        drawParticles();
+
+
+        const sentences = [
+            "Smarter & Simplified Investing!",
+            "Efficient Stock Analysis!",
+            "Investing made simple and easy!"
+        ];
+
+        let i = 0, j = 0;
+        let isDeleting = false;
+        let typingSpeed = 50; // Adjust typing speed (lower is faster)
+        let eraseSpeed = 30; // Adjust erasing speed
+        let pauseTime = 1500; // Time to wait before erasing
+
+        function typeEffect() {
+            const currentText = sentences[j];
+            if (!isDeleting) {
+                document.getElementById("typing-text").textContent = currentText.slice(0, i++);
+                if (i > currentText.length) {
+                    isDeleting = true;
+                    setTimeout(typeEffect, pauseTime); // Wait before erasing
+                    return;
+                }
+            } else {
+                document.getElementById("typing-text").textContent = currentText.slice(0, --i);
+                if (i === 0) {
+                    isDeleting = false;
+                    j = (j + 1) % sentences.length; // Move to next sentence
+                }
+            }
+            setTimeout(typeEffect, isDeleting ? eraseSpeed : typingSpeed);
+        }
+
+        setTimeout(typeEffect, 500); // Start typing after delay
     </script>
 </body>
 </html>
