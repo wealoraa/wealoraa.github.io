@@ -102,50 +102,7 @@
         <h2 class="text-center mb-4">Stock Reports</h2>
         
         <div class="stock-container">
-
-            <div class="stock-card" onclick="loadReport('./reports/BHEL_report.html')">
-                <img src="stock1_logo.png" alt="Stock 1">
-                <span>Stock 1</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock2.html')">
-                <img src="stock2_logo.png" alt="Stock 2">
-                <span>Stock 2</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock3.html')">
-                <img src="stock3_logo.png" alt="Stock 3">
-                <span>Stock 3</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock4.html')">
-                <img src="stock4_logo.png" alt="Stock 4">
-                <span>Stock 4</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock5.html')">
-                <img src="stock5_logo.png" alt="Stock 5">
-                <span>Stock 5</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('./reports/BHEL_report.html')">
-                <img src="stock1_logo.png" alt="Stock 1">
-                <span>Stock 1</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock2.html')">
-                <img src="stock2_logo.png" alt="Stock 2">
-                <span>Stock 2</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock3.html')">
-                <img src="stock3_logo.png" alt="Stock 3">
-                <span>Stock 3</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock4.html')">
-                <img src="stock4_logo.png" alt="Stock 4">
-                <span>Stock 4</span>
-            </div>
-            <div class="stock-card" onclick="loadReport('stock5.html')">
-                <img src="stock5_logo.png" alt="Stock 5">
-                <span>Stock 5</span>
-            </div>
-            <div class="stock-card" onclick="scrollToRequest()" style="max-width: 200px; text-align: center;">
-                <span style="white-space: normal;">Didn't find what you're looking for? Raise a Request</span>
-            </div>
+            <!-- Stock cards will be added here dynamically -->
         </div>
 
         <iframe id="report-frame" class="w-100 mt-3" style="display: none; height: auto; background-color: #ffffff;"></iframe>
@@ -190,10 +147,10 @@
                 stocks.forEach(stock => {
                     const stockCard = document.createElement('div');
                     stockCard.classList.add('stock-card');
-                    stockCard.onclick = () => loadReport(stock.name + "_report.html");
+                    stockCard.onclick = () => loadReport("/reports/" + stock.name + "_report.html");
 
                     stockCard.innerHTML = `
-                        <img src="${stock.name + "_logo.png"}" alt="${stock.name}">
+                        <img src="/images/${stock.name + "_logo.png"}" alt="${stock.name}">
                         <span>${stock.name}</span>
                     `;
 
@@ -211,18 +168,6 @@
                 console.error('Error loading stocks:', error);
             }
         });
-
-        // function loadReport(file) {
-        //     document.getElementById('report-frame').src = file;
-        //     document.getElementById('report-frame').style.display = 'block';
-        //     // const div = document.getElementById("report-frame");
-        //     // // div.style.height = "auto"; // Reset height
-        //     // div.style.height = div.scrollHeight + "px"; // Set to content height
-
-        //     const div = document.getElementById("report-frame");
-        //     div.style.height = "auto"; // Reset height to recalculate
-        //     div.style.height = div.scrollHeight + "px"; // Set height dynamically
-        // }
 
         function loadReport(file) {
             let iframe = document.getElementById('report-frame');
