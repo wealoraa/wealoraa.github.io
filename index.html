@@ -84,11 +84,12 @@
             background: #1e1e1e;
         }
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #2C3E50;
+            border-color: #2C3E50;
         }
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #2a323a;
+            border-color: #2a323a;
         }
         /* #stock-reports {
             background: linear-gradient(#121212, #2C3E50);
@@ -131,6 +132,25 @@
             color:#ffffff; 
             text-decoration:none; 
             cursor:pointer;  
+        }
+
+        .iframe-container-request {
+            position: relative;
+            width: 100%; /* Full width */
+            max-width: 640px; /* Prevents growing beyond original width */
+            aspect-ratio: 640 / 680; /* Maintains the aspect ratio */
+        }
+
+        .iframe-container-feedback {
+            position: relative;
+            width: 100%; /* Full width */
+            max-width: 640px; /* Prevents growing beyond original width */
+            aspect-ratio: 640 / 1250; /* Maintains the aspect ratio */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -185,7 +205,9 @@
     <section id="feedback">
         <div class="container py-5" style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
             <h2 class="text-center">Let us know how we are doing!</h2>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfUz9u_UkREXigE41gmqKyHiy4ZHE86BDamk_6AXCFDEgq3hA/viewform?embedded=true" width="640" height="1850" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            <div class="iframe-container-feedback">
+                <iframe id="feedback-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSfUz9u_UkREXigE41gmqKyHiy4ZHE86BDamk_6AXCFDEgq3hA/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
         </div>
     </section>
     
@@ -193,7 +215,9 @@
     <section id="stock-request">
         <div class="container py-5"  style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
             <h2 class="text-center">Raise a Stock Request!</h2>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" width="640" height="700" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            <div class="iframe-container-request">
+                <iframe id="request-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
         </div>
     </section>
 
@@ -201,9 +225,9 @@
     <section id="referral">
         <div class="container py-5" style="align-items: center; justify-items: center;">
             <h2 class="text-center">Referral Program</h2>
-            <form action="javascript:generateReferral()" style="width: 500px; align-items: center; justify-items: center;">
-                <input type="email" id="email" class="form-control" style="max-width: 500px;" placeholder="Enter your email">
-                <button type="submit" class="btn btn-primary mt-2">Generate Referral Link</button>
+            <form action="javascript:generateReferral()" style="width: 300px; align-items: center; justify-items: center;">
+                <input type="email" id="email" class="form-control" style="max-width: 300px;" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary mt-3">Generate Referral Link</button>
             </form>
             <p id="referral-link" class="mt-3"></p>
         </div>
@@ -294,6 +318,24 @@
         function scrollToRequest() {
             document.getElementById('stock-request').scrollIntoView({ behavior: 'smooth' });
         }
+
+        function adjustIframeHeight() {
+            const iframe1 = document.getElementById("request-iframe");
+            if (iframe1) {
+                const aspectRatio = 680 / 640; // Original aspect ratio
+                iframe1.style.height = (iframe1.offsetWidth * aspectRatio) + "px";
+            }
+
+            const iframe2 = document.getElementById("feedback-iframe");
+            if (iframe2) {
+                const aspectRatio = 1250 / 640; // Original aspect ratio
+                iframe2.style.height = (iframe2.offsetWidth * aspectRatio) + "px";
+            }
+        }
+
+        // Adjust on load and window resize
+        window.addEventListener("load", adjustIframeHeight);
+        window.addEventListener("resize", adjustIframeHeight);
     </script>
 </body>
 </html>
