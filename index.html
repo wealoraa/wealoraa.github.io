@@ -206,7 +206,7 @@
         <div class="container py-5" style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
             <h2 class="text-center">Let us know how we are doing!</h2>
             <div class="iframe-container-feedback">
-                <iframe id="feedback-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSfUz9u_UkREXigE41gmqKyHiy4ZHE86BDamk_6AXCFDEgq3hA/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                <iframe id="feedback-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLSfUz9u_UkREXigE41gmqKyHiy4ZHE86BDamk_6AXCFDEgq3hA/viewform?embedded=true" height="auto" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
             </div>
         </div>
     </section>
@@ -216,7 +216,7 @@
         <div class="container py-5"  style="align-content: center; align-items: center; justify-content: center; justify-items: center; overflow-y: hidden;">
             <h2 class="text-center">Raise a Stock Request!</h2>
             <div class="iframe-container-request">
-                <iframe id="request-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                <iframe id="request-iframe" src="https://docs.google.com/forms/d/e/1FAIpQLScJbhKeK1-WUmfKWLvIWDZzAu_LsCtnDoFp8jhlfDzkmoRnSA/viewform?embedded=true" height="auto" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
             </div>
         </div>
     </section>
@@ -319,23 +319,19 @@
             document.getElementById('stock-request').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function adjustIframeHeight() {
-            const iframe1 = document.getElementById("request-iframe");
-            if (iframe1) {
-                const aspectRatio = 680 / 640; // Original aspect ratio
-                iframe1.style.height = (iframe1.offsetWidth * aspectRatio) + "px";
-            }
+        let request_frame = document.getElementById('request-iframe');
+        request_frame.onload = function () {
+            setTimeout(() => {
+                request_frame.style.height = request_frame.contentWindow.document.documentElement.scrollHeight + 'px';
+            }, 200); // Adding a slight delay to ensure the content is fully loaded
+        };
 
-            const iframe2 = document.getElementById("feedback-iframe");
-            if (iframe2) {
-                const aspectRatio = 1250 / 640; // Original aspect ratio
-                iframe2.style.height = (iframe2.offsetWidth * aspectRatio) + "px";
-            }
-        }
-
-        // Adjust on load and window resize
-        window.addEventListener("load", adjustIframeHeight);
-        window.addEventListener("resize", adjustIframeHeight);
+        let feedback_frame = document.getElementById('feedback-iframe');
+        feedback_frame.onload = function () {
+            setTimeout(() => {
+                feedback_frame.style.height = feedback_frame.contentWindow.document.documentElement.scrollHeight + 'px';
+            }, 200); // Adding a slight delay to ensure the content is fully loaded
+        };
     </script>
 </body>
 </html>
