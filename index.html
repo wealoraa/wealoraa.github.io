@@ -30,7 +30,7 @@
             font-family: 'Proxima Nova Condensed', sans-serif;
             font-weight: 600;
         }
-        h1, h2 {
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Proxima Nova Condensed', sans-serif;
             font-weight: 600;
         }
@@ -229,15 +229,20 @@
         <div class="container py-5" style="align-items: center; justify-items: center;">
             <h2 class="text-center">Referral Program</h2>
             <!-- TODO: Write a bit about the referral program -->
+             <h4 class="pt-5">Why should you refer and share us ?</h4>
+             <ul>
+                <li>Priority Stock Report Requests → Top referrer's stock requests will be served faster.</li>
+                <li>Early Access to New Reports & Features → Before they might even go public.</li>
+             </ul>
             <!-- Priority Stock Report Requests → Let referrers request custom reports.
             Early Access to New Reports & Features → Before they go public.
             Ad-Free Experience Later → Top referrers will get a clean interface.
             Leaderboard & Community Recognition → Top referrers will be recognized on the website. -->
-            <form action="javascript:generateReferral()" style="width: 300px; align-items: center; justify-items: center;">
+            <form action="javascript:generateReferral()" style="width: 300px; align-items: center; justify-items: center;" class="pt-5">
                 <input type="email" id="email" class="form-control" style="max-width: 300px;" placeholder="Enter your email" required>
                 <button type="submit" class="btn btn-primary mt-3">Generate Referral Link</button>
+                <p id="referral-link" class="mt-3" style="white-space: normal;word-wrap: break-word;word-break: break-all;"></p>
             </form>
-            <p id="referral-link" class="mt-3"></p>
         </div>
     </section>
     
@@ -304,10 +309,13 @@
 
 
         function generateReferral() {
-            let email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
+            let emailPrefix = email.split('@')[0];
             if (email) {
-                let referralLink = `https://wealoraa.com?ref=${btoa(email)}`;
-                document.getElementById('referral-link').innerHTML = `Your referral link: <span onclick="copyContent()" id="ref_link" style="font-weight: bold;">${referralLink}</span>`;
+                const encodedEmail = encodeURIComponent(emailPrefix);
+                const referralLink = `${window.location.origin}?utm_source=referral&utm_referrer=${encodedEmail}`;
+                document.getElementById('referral-link').innerHTML = 
+                    `Your referral link: <span onclick="copyContent()" id="ref_link" style="font-weight: bold;">${referralLink}</span>`;
                 gtag('event', 'generate_referral', {'email': email});
             }
         }
